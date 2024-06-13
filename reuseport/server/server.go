@@ -11,6 +11,14 @@ import (
 	reuseport "github.com/libp2p/go-reuseport"
 )
 
+var m *greatws.MultiEventLoop
+
+func init() {
+
+	m = greatws.NewMultiEventLoopMust(greatws.WithEventLoops(0), greatws.WithMaxEventNum(256), greatws.WithLogLevel(slog.LevelError)) // epoll, kqueue
+	m.Start()
+}
+
 type echoHandler struct{}
 
 func (e *echoHandler) OnOpen(c *greatws.Conn) {

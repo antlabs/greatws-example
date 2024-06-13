@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dir Watch</title>
+    <script type="text/javascript">
+        var ws = new WebSocket("ws://localhost:8080/ws");
+        ws.onmessage = function (event) {
+            document.getElementById("fileList").innerHTML = event.data;
+        };
+    </script>
+</head>
+
+<body>
+    <h1>Directory Watcher</h1>
+    <div id="fileList"></div>
+</body>
+
+</html>

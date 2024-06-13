@@ -3,7 +3,7 @@ module github.com/antlabs/greatws-example
 go 1.22.1
 
 require (
-	github.com/antlabs/greatws v0.1.11
+	github.com/antlabs/greatws v0.2.1
 	github.com/libp2p/go-reuseport v0.4.0
 )
 

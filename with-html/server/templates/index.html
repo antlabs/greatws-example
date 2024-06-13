@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Echo Example</title>
+</head>
+<body>
+    <input type="text" id="message" placeholder="Enter message">
+    <button id="sendButton">Send</button>
+    <div id="output"></div>
+
+    <script>
+        const messageInput = document.getElementById("message");
+        const sendButton = document.getElementById("sendButton");
+        const outputDiv = document.getElementById("output");
+
+        const socket = new WebSocket("ws://127.0.0.1:8080/ws");
+
+        socket.onopen = function(event) {
+            console.log("WebSocket连接已打开");
+        };
+
+        socket.onmessage = function(event) {
+            const message = event.data;
+            outputDiv.innerHTML += `<p>Received: ${message}</p>`;
+        };
+
+        socket.onclose = function(event) {
+            console.log("WebSocket连接已关闭");
+        };
+
+        sendButton.addEventListener("click", function() {
+            const messageToSend = messageInput.value;
+            socket.send(messageToSend);
+            outputDiv.innerHTML += `<p>Sent: ${messageToSend}</p>`;
+            messageInput.value = "";
+        });
+    </script>
+</body>
+</html>
+

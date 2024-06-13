@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatroom</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #chat {
+            width: 800px;
+            height: 600px;
+            border: 1px solid #ccc;
+            overflow-y: scroll;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        #msg {
+            width: 700px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Chatroom</h1>
+    <div id="chat"></div>
+    <input type="text" id="msg" placeholder="Type a message..." />
+    <button id="send">Send</button>
+    <script>
+        const nickname = prompt("Enter your nickname:");
+        if (!nickname) {
+            alert("Nickname is required!");
+            window.location.reload();
+        }
+
+        const chat = document.getElementById('chat');
+        const msgInput = document.getElementById('msg');
+        const sendButton = document.getElementById('send');
+
+        const ws = new WebSocket(`ws://${window.location.host}/ws?nickname=${nickname}`);
+
+        ws.onmessage = function (event) {
+            const message = document.createElement('p');
+            message.textContent = event.data;
+            chat.appendChild(message);
+            chat.scrollTop = chat.scrollHeight;
+        };
+
+        sendButton.onclick = function () {
+            const msg = msgInput.value;
+            if (msg) {
+                ws.send(msg);
+                msgInput.value = '';
+            }
+        };
+
+        msgInput.onkeypress = function (event) {
+            if (event.key === 'Enter') {
+                sendButton.click();
+            }
+        };
+    </script>
+</body>
+
+</html>

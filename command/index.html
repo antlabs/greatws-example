@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Remote Command Executor</title>
+</head>
+
+<body>
+    <h1>Remote Command Executor</h1>
+    <input type="text" id="commandInput" placeholder="Enter command" />
+    <button onclick="sendCommand()">Execute</button>
+    <pre id="output"></pre>
+
+    <script>
+        const websocket = new WebSocket("ws://localhost:8080/ws");
+
+        websocket.onmessage = function (event) {
+            document.getElementById("output").textContent = event.data;
+        };
+
+        function sendCommand() {
+            const commandInput = document.getElementById("commandInput");
+            websocket.send(commandInput.value);
+        }
+    </script>
+</body>
+
+</html>
